@@ -1,11 +1,10 @@
-public class LoginAtendente {
+public class LoginAtendente extends Login {
     private Atendente atendente;
-    private String senha;
-    private String login;
 
-    public LoginAtendente(){
-
+    public LoginAtendente(String login, String senha) {
+        super(login, senha);
     }
+
 
     public Atendente getAtendente() {
         return atendente;
@@ -15,19 +14,8 @@ public class LoginAtendente {
         this.atendente = atendente;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    @Override
+    public boolean autenticar() {
+        return false;
     }
 }

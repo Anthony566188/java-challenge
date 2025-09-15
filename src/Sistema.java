@@ -114,14 +114,39 @@ public class Sistema {
     }
 
     // PARA INSERIR UM MÉDICO É NECESSÁRIO CONTER UMA ESPECIALIDADE INSERIDA NA TB_ESPECIALIDADE
-    public boolean inserirMedico(Medico medico, Especialidade especialidade){
+    public boolean inserirMedico(Medico medico, Especialidade especialidade, MedicoLogin medicoLogin){
         String sql = "INSERT INTO TB_MEDICO (id_especialidade, nome_medico) VALUES (?,?)";
 
+        String sqlLogin = "INSERT INTO TB_MEDICO_LOGIN (id_medico, login, senha) VALUES (?,?,?)";
+
+
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            // 1) Inserir médico e pegar ID gerado
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, especialidade.getId());
             ps.setString(2, medico.getNome());
             ps.execute();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            int idMedico = 0;
+            if (rs.next()) {
+                idMedico = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+
+            // agora você pode setar no objeto (se quiser reaproveitar depois)
+            medico.setId(idMedico);
+            medicoLogin.setMedico(medico);
+
+            // 2) Inserir login/senha com o id do médico
+            PreparedStatement psLogin = conn.prepareStatement(sqlLogin);
+            psLogin.setInt(1, idMedico);
+            psLogin.setString(2, medicoLogin.getLogin());
+            psLogin.setString(3, medicoLogin.getSenha());
+            psLogin.execute();
+            psLogin.close();
+
         } catch (SQLException e) {
             if (conn == null) {
                 System.err.println("Conexão NULA!");

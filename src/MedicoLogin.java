@@ -1,11 +1,18 @@
-public class MedicoLogin {
-
+public class MedicoLogin extends Login {
     private Medico medico;
-    private String login;
-    private String senha;
 
-    public MedicoLogin(){
+    public MedicoLogin(String login, String senha) {
+        super(login, senha);
 
+    }
+
+    @Override
+    public boolean autenticar() {
+        // Lógica de autenticação específica para médico
+        // Exemplo: Buscar no banco de dados se o login e senha do médico são válidos
+        System.out.println("Autenticando como Médico...");
+        // Retorna true se a autenticação for bem-sucedida, false caso contrário
+        return true;
     }
 
     public Medico getMedico() {
@@ -14,21 +21,5 @@ public class MedicoLogin {
 
     public void setMedico(Medico medico) {
         this.medico = medico;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 }

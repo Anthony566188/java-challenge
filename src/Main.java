@@ -15,7 +15,7 @@ public class Main {
         TipoProblema tipoProblema2 = new TipoProblema("Problema com tal coisa 2");
 
         // Criando uma especialidade
-        Especialidade especialidade = new Especialidade(1, "Especialidade 1");
+        Especialidade especialidade = new Especialidade( "Especialidade 1");
 
         // Criando um médico
         Medico medico = new Medico(1, especialidade, "Medico 1");
@@ -26,15 +26,19 @@ public class Main {
                 LocalDateTime.of(2025, 9, 14, 15, 0),
                 LocalDateTime.of(2025, 9, 14, 16, 0));
 
+
         // Criando o objeto Sistema para chamar os métodos
         Sistema sistema = new Sistema();
 
+        // Criando o objeto login para chamar o método
+        MedicoLogin medicoLogin = new MedicoLogin("medico123", "12345678");
+
         //System.out.println(sistema.inserirTipoProblema(tipoProblema) ? "Tipo de problema inserido!" : "Tipo de problema NÃO inserido!");
-        System.out.println(sistema.inserirTipoProblema(tipoProblema2) ? "Tipo de problema inserido!" : "Tipo de problema NÃO inserido!");
+        //System.out.println(sistema.inserirTipoProblema(tipoProblema2) ? "Tipo de problema inserido!" : "Tipo de problema NÃO inserido!");
 
         //System.out.println(sistema.inserirPaciente(paciente) ? "Paciente inserido!" : "Paciente NÃO inserido!");
-        //System.out.println(sistema.inserirEspecialidade(especialidade) ? "Especialidade inserida!" : "Especialidade NÃO inserida!");
-        //System.out.println(sistema.inserirMedico(medico, especialidade) ? "Médico inserido!" : "Médico NÃO inserido!");
+        System.out.println(sistema.inserirEspecialidade(especialidade) ? "Especialidade inserida!" : "Especialidade NÃO inserida!");
+        //System.out.println(sistema.inserirMedico(medico, especialidade, medicoLogin) ? "Médico inserido!" : "Médico NÃO inserido!");
         //System.out.println(sistema.inserirConsulta(consulta, paciente, medico) ? "Consulta inserida!" : "Consulta NÃO inserida!");
         //System.out.println(sistema.criarTicket(new Ticket(1), paciente, tipoProblema, consulta) ? "Ticket criado!" : "Ticket NÃO Criado!");
 
@@ -53,6 +57,8 @@ public class Main {
 //            System.out.println("ID da consulta: " + ticket.getConsulta().getId());
 //            System.out.println("\n------------------------------------\n");
 //        }
+
+
 
 
 

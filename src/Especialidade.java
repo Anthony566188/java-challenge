@@ -2,8 +2,7 @@ public class Especialidade {
     private int id;
     private String nome;
 
-    public Especialidade(int id, String nome) {
-        this.id = id;
+    public Especialidade(String nome) {
         this.nome = nome;
     }
 

@@ -1,11 +1,10 @@
-public class LoginPaciente {
-    private Paciente paciente; // Composição em java
-    private String senha;
-    private String login;
+public class LoginPaciente extends Login {
+    private Paciente paciente;
 
-    public LoginPaciente() {
-
+    public LoginPaciente(String login, String senha) {
+        super(login, senha);
     }
+
 
     public Paciente getPaciente() {
         return paciente;
@@ -15,19 +14,8 @@ public class LoginPaciente {
         this.paciente = paciente;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    @Override
+    public boolean autenticar() {
+        return false;
     }
 }
