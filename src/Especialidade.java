@@ -6,6 +6,8 @@ public class Especialidade {
         this.nome = nome;
     }
 
+
+
     public int getId() {
         return id;
     }

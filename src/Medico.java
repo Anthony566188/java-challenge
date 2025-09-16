@@ -4,8 +4,7 @@ public class Medico {
     private Especialidade especialidade;
     private String nome;
 
-    public Medico(int id,  Especialidade especialidade, String nome) {
-        this.id = id;
+    public Medico(Especialidade especialidade, String nome) {
         this.especialidade = especialidade;
         this.nome = nome;
     }

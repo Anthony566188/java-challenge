@@ -1,3 +1,4 @@
+import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.*;
@@ -86,65 +87,76 @@ public class Sistema {
 
     }
 
-    public boolean inserirEspecialidade(Especialidade especialidade){
-        String sql = "INSERT INTO TB_ESPECIALIDADE (nome_especialidade) VALUES (?)";
+    public boolean inserirEspecialidade(Especialidade especialidade) {
+        String sql = "INSERT INTO TB_ESPECIALIDADE (nome_especialidade) VALUES (?) RETURNING id_especialidade INTO ?";
 
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            // Usando a extensão OraclePreparedStatement
+            OraclePreparedStatement ps = (OraclePreparedStatement) conn.prepareStatement(sql);
+
             ps.setString(1, especialidade.getNome());
-            ps.execute();
-        } catch (SQLException e) {
-            if (conn == null) {
-                System.err.println("Conexão NULA!");
-            } else {
-                System.err.println("Erro no PreparedStatement!");
+            ps.registerReturnParameter(2, java.sql.Types.INTEGER);
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getReturnResultSet();
+            if (rs.next()) {
+                int idEspecialidade = rs.getInt(1);
+                especialidade.setId(idEspecialidade);
             }
+            rs.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            System.err.println("Erro no PreparedStatement!");
             e.printStackTrace();
             return false;
-        }  finally {
-            System.out.println("Fechando a conexão com o banco de dados...");
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar a conexão!");
-                e.printStackTrace();
-            }
+        } finally {
+//            System.out.println("Fechando a conexão com o banco de dados...");
+//            try {
+//                conn.close();
+//            } catch (SQLException e) {
+//                System.err.println("Erro ao fechar a conexão!");
+//                e.printStackTrace();
+//            }
         }
         return true;
     }
 
+
     // PARA INSERIR UM MÉDICO É NECESSÁRIO CONTER UMA ESPECIALIDADE INSERIDA NA TB_ESPECIALIDADE
     public boolean inserirMedico(Medico medico, Especialidade especialidade, MedicoLogin medicoLogin){
-        String sql = "INSERT INTO TB_MEDICO (id_especialidade, nome_medico) VALUES (?,?)";
+        String sql = "INSERT INTO TB_MEDICO (id_especialidade, nome_medico) VALUES (?,?) RETURNING id_medico INTO ?";
 
         String sqlLogin = "INSERT INTO TB_MEDICO_LOGIN (id_medico, login, senha) VALUES (?,?,?)";
 
 
         try {
             // 1) Inserir médico e pegar ID gerado
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            OraclePreparedStatement ps = (OraclePreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, especialidade.getId());
             ps.setString(2, medico.getNome());
+            ps.registerReturnParameter(3, java.sql.Types.INTEGER);
             ps.execute();
 
-            ResultSet rs = ps.getGeneratedKeys();
             int idMedico = 0;
+            ResultSet rs = ps.getReturnResultSet();
             if (rs.next()) {
-                idMedico = rs.getInt(1);
+                idMedico = rs.getInt(1); // capturando o ID gerado
+                medico.setId(idMedico);  // atualiza objeto Medico
             }
             rs.close();
             ps.close();
 
-            // agora você pode setar no objeto (se quiser reaproveitar depois)
-            medico.setId(idMedico);
+            // agora você pode setar no objeto login também
             medicoLogin.setMedico(medico);
 
             // 2) Inserir login/senha com o id do médico
             PreparedStatement psLogin = conn.prepareStatement(sqlLogin);
-            psLogin.setInt(1, idMedico);
+            psLogin.setInt(1, idMedico);  // usa o ID recuperado aqui
             psLogin.setString(2, medicoLogin.getLogin());
             psLogin.setString(3, medicoLogin.getSenha());
-            psLogin.execute();
+            psLogin.executeUpdate();
             psLogin.close();
 
         } catch (SQLException e) {
@@ -240,6 +252,31 @@ public class Sistema {
     public boolean excluirTicket(int id) {
 
         String sql = "DELETE FROM TB_TICKET WHERE id_ticket = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir um Ticket!");
+            e.printStackTrace();
+            return false;
+        }finally {
+            System.out.println("Fechando a conexão...");
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Não foi possível encerrar a conexão!");
+                e.printStackTrace();
+            }
+        }
+
+        return true;
+    }
+
+    public boolean excluirEspecialidade(int id) {
+
+        String sql = "DELETE FROM TB_ESPECIALIDADE WHERE id_especialidade = ?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
