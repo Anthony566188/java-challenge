@@ -17,19 +17,22 @@ public class Main {
         TipoProblema tipoProblema = new TipoProblema("Problema com tal coisa");
         TipoProblema tipoProblema2 = new TipoProblema("Problema com tal coisa 2");
 
-        // Criando uma especialidade
-        //Especialidade especialidade = new Especialidade( "Cardiologia");
-        Especialidade especialidade1 = new Especialidade("Especialidade teste final");
+        // Criando especialidades e registrando na lista
+        Especialidade.adicionarEspecialidade(new Especialidade(1, "Cardiologia"));
+        Especialidade.adicionarEspecialidade(new Especialidade(2, "Pediatria"));
+        Especialidade.adicionarEspecialidade(new Especialidade(3, "Ortopedia"));
 
+        // Pegando o cardiologista
+        Especialidade cardiologista = Especialidade.getEspecialidades().get(1);
 
         // Criando um médico
-        Medico medico = new Medico(especialidade1, "Medico 1");
+        Medico medico = new Medico(cardiologista, "Medico 1");
 
         // Criando uma consulta
         // Aqui, a consulta começará no dia 14/09/2025 às 15h00 e terminará às 16h00
-        Consulta consulta = new Consulta(1, paciente, medico,
-                LocalDateTime.of(2025, 9, 14, 15, 0),
-                LocalDateTime.of(2025, 9, 14, 16, 0));
+//        Consulta consulta = new Consulta(1, paciente, medico,
+//                LocalDateTime.of(2025, 9, 14, 15, 0),
+//                LocalDateTime.of(2025, 9, 14, 16, 0));
 
 
 
@@ -41,14 +44,18 @@ public class Main {
         //System.out.println(sistema.inserirTipoProblema(tipoProblema2) ? "Tipo de problema inserido!" : "Tipo de problema NÃO inserido!");
 
         //System.out.println(sistema.inserirPaciente(paciente) ? "Paciente inserido!" : "Paciente NÃO inserido!");
-        System.out.println(sistema.inserirEspecialidade(especialidade1) ? "Especialidade inserida!" : "Especialidade NÃO inserida!");
-        System.out.println(sistema.inserirMedico(medico, especialidade1, medicoLogin) ? "Médico inserido!" : "Médico NÃO inserido!");
+        //System.out.println(sistema.inserirEspecialidade(especialidade1) ? "Especialidade inserida!" : "Especialidade NÃO inserida!");
+        //System.out.println(sistema.inserirMedico(medico, cardiologista, medicoLogin) ? "Médico inserido!" : "Médico NÃO inserido!");
         //System.out.println(sistema.inserirConsulta(consulta, paciente, medico) ? "Consulta inserida!" : "Consulta NÃO inserida!");
         //System.out.println(sistema.criarTicket(new Ticket(1), paciente, tipoProblema, consulta) ? "Ticket criado!" : "Ticket NÃO Criado!");
 
+//        System.out.println(sistema.excluirMedicoLogin(1) ?
+//                "Login do médico Removido!" : "Login do médico NÃO removido!");
 //        System.out.println(sistema.excluirTicket(1) ?
 //						"Ticket Removido!" : "Ticket NÃO removido!");
-//        System.out.println(sistema.excluirEspecialidade(2) ?
+//        System.out.println(sistema.excluirMedico(1) ?
+//						"Especialidade Removida!" : "Especialidade NÃO removida!");
+//        System.out.println(sistema.excluirEspecialidade(1) ?
 //						"Especialidade Removida!" : "Especialidade NÃO removida!");
 //        System.out.println(sistema.excluirTipoProblema(1) ?
 //					"Tipo de Problema Removido!" : "Tipo de Problema NÃO removido!");

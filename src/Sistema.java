@@ -88,37 +88,29 @@ public class Sistema {
     }
 
     public boolean inserirEspecialidade(Especialidade especialidade) {
-        String sql = "INSERT INTO TB_ESPECIALIDADE (nome_especialidade) VALUES (?) RETURNING id_especialidade INTO ?";
+
+
+
+        String sql = "INSERT INTO TB_ESPECIALIDADE (nome_especialidade) VALUES (?)";
 
         try {
-            // Usando a extensão OraclePreparedStatement
-            OraclePreparedStatement ps = (OraclePreparedStatement) conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, especialidade.getNome());
-            ps.registerReturnParameter(2, java.sql.Types.INTEGER);
-
-            ps.executeUpdate();
-
-            ResultSet rs = ps.getReturnResultSet();
-            if (rs.next()) {
-                int idEspecialidade = rs.getInt(1);
-                especialidade.setId(idEspecialidade);
-            }
-            rs.close();
-            ps.close();
+            ps.execute();
 
         } catch (SQLException e) {
             System.err.println("Erro no PreparedStatement!");
             e.printStackTrace();
             return false;
         } finally {
-//            System.out.println("Fechando a conexão com o banco de dados...");
-//            try {
-//                conn.close();
-//            } catch (SQLException e) {
-//                System.err.println("Erro ao fechar a conexão!");
-//                e.printStackTrace();
-//            }
+            System.out.println("Fechando a conexão com o banco de dados...");
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar a conexão!");
+                e.printStackTrace();
+            }
         }
         return true;
     }
@@ -156,7 +148,7 @@ public class Sistema {
             psLogin.setInt(1, idMedico);  // usa o ID recuperado aqui
             psLogin.setString(2, medicoLogin.getLogin());
             psLogin.setString(3, medicoLogin.getSenha());
-            psLogin.executeUpdate();
+            psLogin.execute();
             psLogin.close();
 
         } catch (SQLException e) {
@@ -249,6 +241,31 @@ public class Sistema {
     //Delete
     //Método excluir()
 
+    public boolean excluirMedicoLogin(int id) {
+
+        String sql = "DELETE FROM TB_MEDICO_LOGIN WHERE ID_MEDICO = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir o login do médico!");
+            e.printStackTrace();
+            return false;
+        }finally {
+            System.out.println("Fechando a conexão...");
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Não foi possível encerrar a conexão!");
+                e.printStackTrace();
+            }
+        }
+
+        return true;
+    }
+
     public boolean excluirTicket(int id) {
 
         String sql = "DELETE FROM TB_TICKET WHERE id_ticket = ?";
@@ -259,6 +276,31 @@ public class Sistema {
             ps.execute();
         } catch (SQLException e) {
             System.err.println("Erro ao excluir um Ticket!");
+            e.printStackTrace();
+            return false;
+        }finally {
+            System.out.println("Fechando a conexão...");
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Não foi possível encerrar a conexão!");
+                e.printStackTrace();
+            }
+        }
+
+        return true;
+    }
+
+    public boolean excluirMedico(int id) {
+
+        String sql = "DELETE FROM TB_MEDICO WHERE id_medico = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir um Médico!");
             e.printStackTrace();
             return false;
         }finally {
