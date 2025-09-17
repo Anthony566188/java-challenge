@@ -21,10 +21,8 @@ public class Main {
         Especialidade.adicionarEspecialidade(new Especialidade(1, "Cardiologia"));
         Especialidade.adicionarEspecialidade(new Especialidade(2, "Pediatria"));
         Especialidade.adicionarEspecialidade(new Especialidade(3, "Ortopedia"));
-
         // Pegando o cardiologista
         Especialidade cardiologista = Especialidade.getEspecialidades().get(1);
-
         // Criando um médico
         Medico medico = new Medico(cardiologista, "Medico 1");
 

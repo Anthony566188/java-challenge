@@ -53,6 +53,36 @@ public class Sistema {
         return true;
     }
 
+    public boolean inserirAtendente(Atendente atendente){
+        String sql = "INSERT INTO TB_ATENDENTE ( nome_atendente, email_atendente) VALUES (?,?)";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, atendente.getNome());
+            ps.setString(2, atendente.getEmail());
+
+            ps.execute();
+        } catch (SQLException e) {
+            if (conn == null) {
+                System.err.println("Conexão NULA!");
+            } else {
+                System.err.println("Erro no PreparedStatement!");
+            }
+            e.printStackTrace();
+            return false;
+        }  finally {
+            System.out.println("Fechando a conexão com o banco de dados...");
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar a conexão!");
+                e.printStackTrace();
+            }
+        }
+        return true;
+
+    }
+
     public boolean inserirPaciente(Paciente paciente){
         String sql = "INSERT INTO TB_PACIENTE (cpf_paciente, nome_paciente, rg_paciente," +
                 " data_nascimento_paciente, endereco_paciente) VALUES (?,?,?,?,?)";
@@ -237,6 +267,38 @@ public class Sistema {
         }
         return true;
     }
+
+//    public boolean inserirConversa(Conversa conversa, Atendente atendente, Ticket ticket, Paciente paciente, TipoProblema tipoProblema, Consulta consulta){
+//        String sql = "INSERT INTO TB_TICKET () VALUES (?,?,?)";
+//
+//        try {
+//            PreparedStatement ps = conn.prepareStatement(sql);
+//            ps.setInt(1, ticket.getId());
+//            ps.setInt(2, paciente.getId());
+//            ps.setInt(3, tipoProblema.getId());
+//            ps.setInt(4, consulta.getId());
+//
+//            ps.execute();
+//            //conn.commit();
+//        } catch (SQLException e) {
+//            if (conn == null) {
+//                System.err.println("Conexão NULA!");
+//            } else {
+//                System.err.println("Erro no PreparedStatement!");
+//            }
+//            e.printStackTrace();
+//            return false;
+//        }  finally {
+//            System.out.println("Fechando a conexão com o banco de dados...");
+//            try {
+//                conn.close();
+//            } catch (SQLException e) {
+//                System.err.println("Erro ao fechar a conexão!");
+//                e.printStackTrace();
+//            }
+//        }
+//        return true;
+//    }
 
     //Delete
     //Método excluir()
